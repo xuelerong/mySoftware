@@ -1,32 +1,23 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <!--    被包裹在keep-alive中的组件的状态将会被保留-->
+    <!--      exclude作用是把详情页的组件排除在外，让其数据更新-->
+   <keep-alive exclude="Detail">
+     <router-view/>
+   </keep-alive>
+   <tarbar-mesage/>
   </div>
 </template>
+<script>
 
-<style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+import TarbarMesage from "./components/tarbar/TarbarMesage";
+export default {
+    name:"App",
+    components:{
+        TarbarMesage
     }
-  }
 }
+</script>
+<style lang="less">
+@import "assets/css/overall.css";
 </style>

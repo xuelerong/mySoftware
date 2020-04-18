@@ -1,30 +1,67 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+
+import Home from "../views/home/Home";
+import Category from "../views/category/Category";
+import Cart from "../views/cart/Cart";
+import Profile from "../views/profile/Profile";
+import SituationMessage from "../components/situationMessage/SituationMessage";
+import Music from "../views/music/Music";
+import Detail from "../views/detail/Detail";
+import Login from "../components/login/Login";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
-    component: Home
+    path:'/',
+    redirect:'/login'
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    path:'/login',
+    component:Login
+  },
+  {
+    path: '/home',
+    component:Home
+  },
+  {
+    path: '/category',
+    component:Category
+  },
+  {
+    path: '/cart',
+    component:Cart
+  },
+  {
+    path: '/profile',
+    component:Profile
+  },
+  {
+    path: '/situationMessage',
+    component:SituationMessage
+  },
+  {
+    path: '/music',
+    component:Music,
+  },
+  {
+    path: '/detail/:id',
+    component:Detail
   }
+
 ];
 
 const router = new VueRouter({
   mode: "history",
-  base: process.env.BASE_URL,
+
   routes
 });
+
+/*vue 路由切换时，重复点击相同路由会报错，解决方案*/
+const originalPush = VueRouter.prototype.replace
+VueRouter.prototype.replace = function replace(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 export default router;

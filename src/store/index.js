@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    username:'蕊宝宝',
+    username:'米斯特薛',
     password:'52047',
     careList:[]
   },
@@ -23,6 +23,7 @@ export default new Vuex.Store({
       payload.counter ++
     },
     addDowncart(state,payload){
+      payload.counter = 1;
       payload.check = true
       state.careList.push(payload)
     }
@@ -46,8 +47,6 @@ export default new Vuex.Store({
           context.commit('addUpcart',oldprice)
           resolve('当前商品数量 +1')
         } else {
-          payload.counter = 1;
-          // context.state.careList.push(payload)
           context.commit('addDowncart',payload)
           resolve('添加商品成功')
         }

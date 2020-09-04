@@ -1,10 +1,12 @@
-export function debounce(func,delay){
-  let time = null
-  return function (...args) {
-    if (time) clearTimeout(time)
-    time = setTimeout( () =>{
-      func.apply(this,args)
-    },delay)
+export function debounce(fun, wait) {
+  let itemout;
+  return function () {
+    let context = this;
+    let ages = arguments;
+    clearTimeout(itemout)
+    itemout = setTimeout(function () {
+      fun.apply(context, ages)
+    }, wait)
   }
 }
 //防抖函数

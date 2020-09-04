@@ -26,7 +26,8 @@
 </template>
 
 <script>
-import {formatDate} from './Utiils'
+import {formatDate} from "../../../common/Utiils";
+
 export default {
   name: '',
   data() {

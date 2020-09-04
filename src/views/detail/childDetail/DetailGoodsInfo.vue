@@ -25,8 +25,6 @@
         methods: {
             imgLoad() {
                 this.$emit('goodsImgLoad')
-                // console.log('goodsImgLoad');
-
             }
         },
         components: {},

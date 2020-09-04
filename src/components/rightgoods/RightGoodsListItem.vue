@@ -28,7 +28,6 @@
             },
             itemclick() {
                 this.$router.push('/detail/' + this.goodsitem.iid)
-
             }
         }
     }

@@ -22,6 +22,7 @@
     import DetailBaseInfo from "./childDetail/DetailBaseInfo";
     import DetailShopInfo from "./childDetail/DetailShopInfo";
     import {Goods, Shop, GoodsParam} from "./childDetail/detail";
+    import {debounce} from "../../common/Utiils";
     import Scroll from "../../components/scroll/Scroll";
     import DetailGoodsInfo from "./childDetail/DetailGoodsInfo";
     import DetailParams from "./childDetail/DetailParams";
@@ -74,7 +75,8 @@
                 /*土司的显示隐藏*/
                 show: false,
                 /*土司的文字内容*/
-                message: ''
+                message: '',
+                getdebance:null
             }
         },
         created() {
@@ -82,29 +84,27 @@
             this.id = this.$route.params.id;
             this.getDetail();
             this.getDetail();
-            this.getCommend()
+            this.getCommend();
+            this.getdebance = debounce( ()=> {
+                /*每次执行时候把seitch数组清空是上一次获取的位置数据*/
+                this.seitch = [];
+                /*获取每个对应的高度push进去数组中*/
+                this.seitch.push(0);
+                this.seitch.push(this.$refs.param.$el.offsetTop);
+                this.seitch.push(this.$refs.commen.$el.offsetTop);
+                this.seitch.push(this.$refs.recommen.$el.offsetTop)
+                console.log(this.seitch);
+            },500)
         },
 
         mounted() {
             this.$toast.loading({
                 message: '加载中...',
                 forbidClick: true,
-                loadingType: 'spinner'
+                loadingType: 'spinner',
+                duration: 500
             });
-
-
         },
-        // updated() {
-        //     /*执行updated函数时候把seitch数组清空这样里面就不会获取*/
-        //   setTimeout(()=>{
-        //       this.seitch = [];
-        //       this.seitch.push(0);
-        //       this.seitch.push(this.$refs.param.$el.offsetTop);
-        //       this.seitch.push(this.$refs.commen.$el.offsetTop);
-        //       this.seitch.push(this.$refs.recommen.$el.offsetTop);
-        //       console.log(this.seitch)
-        //   },2000)
-        // },
         methods: {
             /*根据id请求数据*/
             getDetail() {
@@ -120,7 +120,7 @@
                         /*获取商品详细信息*/
                         this.detailInfo = res.data.result.detailInfo;
                         /*获取商品参数信息*/
-                        this.paramInfo = new GoodsParam(res.data.result.itemParams.info, res.data.result.itemParams.rule)
+                        this.paramInfo = new GoodsParam(res.data.result.itemParams.info)
                         /*获取用户评论*/
                         if (res.data.result.rate.cRate !== 0) {
                             this.commentInfo = res.data.result.rate.list[0]
@@ -137,14 +137,9 @@
                     })
             },
             goodsImgLoad() {
+                /*图片加载完刷新一次防止无法滚动*/
                 this.$refs.scroll.refresh();
-                /*执行时候把seitch数组清空这样里面就不会重复获取*/
-                this.seitch = [];
-                /*获取每个对应的高度push进去数组中*/
-                this.seitch.push(0);
-                this.seitch.push(this.$refs.param.$el.offsetTop);
-                this.seitch.push(this.$refs.commen.$el.offsetTop);
-                this.seitch.push(this.$refs.recommen.$el.offsetTop);
+               this.getdebance()
             },
             /*点击标题跳转到对应的内容*/
             tittletim(index) {
@@ -155,11 +150,11 @@
             scroll(opsition) {
                 const positionY = -opsition.y + 2;
                 for (let i in this.seitch) {
-                    i = i * 1;
-                    if (this.topCurrendes !== i && (i < this.seitch.length - 1 && positionY > this.seitch [i] && positionY < this.seitch[i + 1])
-                        || (i === this.seitch.length - 1 && positionY > this.seitch[i])) {
-                        console.log(i)
+                    i = parseInt(i)
+                    if (this.topCurrendes !== i && (i < this.seitch.length - 1 && positionY >= this.seitch [i] && positionY < this.seitch[i + 1])
+                        || (i === this.seitch.length - 1 && positionY >= this.seitch[i])) {
                         this.topCurrendes = i;
+                        console.log(this.topCurrendes)
                         this.$refs.currendes.currentIndex = this.topCurrendes
                     }
                 }
@@ -183,6 +178,7 @@
                 this.$store.dispatch('addCart', host).then(res => {
                     this.message = res;
                     this.show = true;
+                    /*三秒后隐藏土司*/
                     setTimeout(() => {
                         this.message = '';
                         this.show = false;

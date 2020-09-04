@@ -35,15 +35,17 @@
 
 <style scoped>
   .typecontral {
+    width: 97%;
     margin-top: -0.2rem;
     display: flex;
     text-align: center;
     font-size: 0.55rem;
     height: 1.2rem;
     line-height: 0.9rem;
-    background-color: #fff;
+    background-color: #ffffff;
     z-index: 10;
     padding-top:0.3rem ;
+    margin-left: 0.24rem;
   }
   .typecontral-item {
     flex: 1;

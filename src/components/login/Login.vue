@@ -1,6 +1,6 @@
 <template>
   <div class="login-loo">
-    <div class="tit">Hellow xh</div>
+    <div class="tit">Hellow user</div>
     <div class="login-pic">
       <img src="../../assets/kenan.jpeg" alt="">
     </div>
@@ -11,7 +11,6 @@
                  label="用户名 :"
                  placeholder="用户名"
                  :rules="[{ required: true, message: '请填写用户名' }]"/>
-
       <van-field
               v-model="password"
               type="password"
@@ -53,7 +52,8 @@
                     this.$toast.loading({
                         message: '登陆中...',
                         forbidClick: true,
-                        loadingType: 'spinner'
+                        loadingType: 'spinner',
+                        duration:1500
                     });
                 } else {
                     Notify('账号或密码输入错误!');
@@ -64,12 +64,10 @@
                     this.$store.commit('increment', username);
                     this.$store.commit('decrement', password)
                     Notify({type: 'success', message: '账户创建成功,请登录!'});
-                    this.$router.replace('/')
                 } else if (this.username || this.password === '') {
                     Notify({type: 'danger', message: '请输入要注册的账号密码!'});
                 }
             },
-
         }
     }
 </script>

@@ -25,6 +25,7 @@
             ChenckButtom
         },
         computed: {
+            /*计算选中商品的总价格*/
             totalPrice() {
                 return '￥' + this.$store.state.careList.filter(item => {
                     return item.check
@@ -33,20 +34,28 @@
                 }, 0).toFixed(2)
                 /*toFixed(2)价格后面加两个小数*/
             },
+            /*显示选中的数量*/
             checkLenght() {
                 return this.$store.state.careList.filter(item => {
                         return item.check
                     }
                 ).length
             },
+            /*判断是否有一个商品不选中，全选按钮就是不选中，反之，全选按钮选中*/
+            /*判断-如果item.check有不被选中的（!item.check）那么他们的length取反就为false
+             [number有值取反为false] 就不显示全选   还有一直情况如果没有商品全选按钮显示*/
             checket() {
                 if (this.$store.state.careList.length === 0) return false
-                return !(this.$store.state.careList.filter(item => {
-                    return !item.check
-                }).length)
+                // 方法1
+                // return !(this.$store.state.careList.filter(item => {
+                //     return !item.check
+                // }).length)
+                // 方法2提升性能
+                return !this.$store.state.careList.find(item =>!item.check)
             }
         },
         methods:{
+        /*点击底部导航栏全选按钮*/
             click(){
                 /*//全部选中的请况*/
                 if(this.checket){

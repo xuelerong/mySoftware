@@ -34,6 +34,7 @@
             }
         },
         methods:{
+            /*点击按钮勾选和不勾选商品*/
             ischecket(){
                 this.itemInfo.check = !this.itemInfo.check
             }

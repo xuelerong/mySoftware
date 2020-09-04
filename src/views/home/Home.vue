@@ -11,7 +11,7 @@
     <scroll class="content" ref="scroll" :bsheight="3"
             @scroll="scroll" :pullUpLoad="true" @moreMessage="moreMessage ">
       <!--轮播图-->
-    <swiper-vant :Picture="banner"/>
+      <swiper-vant :Picture="banner"/>
       <!--recommend 图片数据-->
       <recommend :recommend="recommed"/>
       <!--疫情数据-->
@@ -37,6 +37,7 @@
     import Scroll from "../../components/scroll/Scroll";
     import BackTop from "../../components/backTop/BackTop";
     import SwiperVant from "../../components/swiper/SwiperVant";
+    import {debounce} from "../../common/Utiils";
 
     export default {
         name: "Home",
@@ -70,7 +71,7 @@
                 /* 保存主页离开的位置*/
                 svaeY: 0,
                 /*对goods组件的监听做一个保存，用来在跳转到其他页面就销毁事件*/
-                itemListener:null
+                itemListener: null
             }
         },
         created() {
@@ -87,9 +88,11 @@
         mounted() {
             /*监听图片的加载完成*/
             /*对goods组件的监听做一个保存，用来在跳转到其他页面就销毁事件*/
-           this.itemListener = this.$bus.$on('morePic', () => {
+            const undebunce = debounce(this.$refs.scroll.refresh,300)
+            //引入防抖 让界面只刷新一次
+            this.itemListener = this.$bus.$on('morePic', () => {
                 /*当图片加载完成以后调用一下bs里面的refresh刷新一下获取可滚动高度*/
-                this.$refs.scroll.refresh()
+                 undebunce()
             });
             this.disHeight()
         },
@@ -137,7 +140,7 @@
                     .then(res => {
                         this.banner = res.data.data.banner.list;
                         this.recommed = res.data.data.recommend.list;
-                        console.log(this.banner)
+                        console.log(res)
                     })
             },
             /*获取选项卡数据*/

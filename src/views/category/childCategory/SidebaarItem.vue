@@ -13,7 +13,8 @@
 </template>
 
 <script>
-    import Scroll from "../../../components/scroll/Scroll";
+  import {debounce} from "../../../common/Utiils";
+  import Scroll from "../../../components/scroll/Scroll";
     import TypeContral from "../../../components/typecontral/TypeContral";
     import RightGoodsList from "../../../components/rightgoods/RightGoodsList";
 
@@ -78,9 +79,10 @@
                 this.$refs.scroll.scroll.scrollTo(0, 0, 400)
             });
             /*监听图片的加载完成*/
+            const catdebunce = debounce(this.$refs.scroll.refresh,300)
             this.$bus.$on('mmorePic', () => {
                 /*当图片加载完成以后调用一下bs里面的refresh刷新一下获取可滚动高度*/
-                this.$refs.scroll.refresh()
+                catdebunce()
             });
             /*接收父组件数据 当点击的时候回到顶部*/
             this.$bus.$on('laiveTop', () => {

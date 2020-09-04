@@ -34,7 +34,7 @@
                 this.$bus.$emit('morePic')
             },
             itemclick() {
-                this.$router.push('/detail/' + this.goodsitem.iid)
+                this.$router.push('/detail/' + this.goodsitem.iid).catch(()=>{})
             }
         }
     }

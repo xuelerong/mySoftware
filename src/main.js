@@ -40,7 +40,7 @@ Vue.use(VueBus);
 Vue.config.productionTip = false;
 
 import axios from 'axios'
-axios.defaults.baseURL = 'http://106.54.54.237:8000/api/h8';
+axios.defaults.baseURL = 'http://123.207.32.32:8000/api/x6';
 /*把axios挂在到vue的原型对象上*/
 Vue.prototype.$http = axios;
 
